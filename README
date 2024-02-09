@@ -1,0 +1,113 @@
+All data recorded necessary to interpret, verify and extend the research are publicly available at: https://osf.io/p5n2k. 
+
+Dear Fellow sEEG Researcher,
+
+These are the motor data from our paper regarding our paper: “Functional Mapping of Movement and Speech Using Task-Based Electrophysiological Changes in Stereoelectroencephalography”
+
+Please keep in mind that these anonymized data are from real patients who donated time in a difficult period of their lives to advance our understanding of the brain. Any publication involving these data MUST include the following in the methods section of the manuscript, without modification: 
+
+
+Ethics statement: The study was conducted according to the guidelines of the Declaration of Helsinki and approved by the Institutional Review Board of the Mayo Clinic IRB# 15-006530, which also authorizes sharing of the data. Each patient / representative voluntarily provided independent written informed consent to participate in this study as specifically described in the IRB review (with the consent form independently approved by the IRB).
+
+
+During our simple motor task, subjects were cued with a word displayed on a bedside monitor indicating whether to move their hand, tongue, or foot for 3 second trials. The subjects performed self-paced movements in response to each of these cues. A 3 second rest trial (blank screen) followed each movement trial. There were 20 movement cues for each movement type, and trials were interleaved randomly. Movement was recorded by electromyographic recordings in pairs from the forearm extensors (hand), chin (tongue), and anterior tibialis (foot). 
+During our speech task, subjects were cued with a picture displayed on a bedside monitor cuing them to name the image (noun production) or come up with an action word (verb generation) during 3.5 second trials. The subjects performed self-paced noun production or verb generation to each of these cues. A 2 second rest trial (blank screen) followed each movement trial. There were 30 images which were interleaved randomly. Speech was recorded using either audio recorded from a synchronized microphone or webcam. 
+The basic datafiles (in MATLAB format) are named “###.mat” in the folder, where ### denotes the 3 letter patient code. This code is not the patients’ initials but corresponds to a song from the Grateful Dead catalogue. The corresponding subject number for each patient from the manuscript is: 
+
+Code	Subject	Age	Sex	Handedness	Language
+PAS	1	36	F	R	L
+DIS	2	16	F	L	L
+MNY	3	16	M	L	L
+NMB	4	16	F	R	L
+WTG	5	12	F	L	R
+POC	6	11	M	R	L
+JBG	7	14	F	R 	L
+VLB	8	8	F	R 	R
+MMU	9	39	M	N/A	L
+MAT	10	13	M	L	L
+TYL	11	18	M	L	R
+TOS	12	15	F	R	L
+MOM	13	13	M	R	L
+BRB	14	20	M	R	L
+WFR	15	18	F	R	L
+LTG	16	7	F	N/A	L
+AML	17	18	M	R	L
+OSN	18	17	F	R	L
+STL	19	6	F	R	L
+ROR	20	17	F	R	L
+Each subject will contain some or all of the following task files:
+
+Motor Files:
+“###_dp_stuff_mot.mat”
+dp_data (samples x number of channels) = These are the bipolar re-referenced data.
+dp_lbls = channel labels corresponding to each dp_loc
+dp_locs = interpolated locations after bipolar re-referencing 
+“###_brain.mat”
+locs (number of channels x 3) = Electrode locations, for plotting on the brain.
+lbls = channel labels corresponding to each channel
+bvol = 3D matrix containing points within brain volume created from de-faced T1 MRI
+bmat = affine transformation matrix
+cortex = struct containing vertices, affine matrix, and faces of pial surface of both hemispheres
+cortex_L = gifti of pial surface of L hemisphere
+cortex_R = gifti of pial surface of R hemisphere
+x = x points of volume
+y = y points of volume
+z = z points of volume
+“###_mot_emg_seg.mat”
+	    beh = vector with EMG-defined movement onset offset (1 = hand, 2 = tongue,  3 = foot, 
+-1 =  rejected data, 0 =rest)
+	    stim = timing of hand, tongue, foot cues across experiment (1 = hand, 2 = tongue,  3 = foot, 
+		0 = no cue)
+srate = sampling rate of gTec amplifier
+Speech Files:
+
+Noun
+“###_dp_stuff_language_noun.mat”
+dp_data (samples x number of channels) = These are the bipolar re-referenced data.
+dp_lbls = channel labels corresponding to each dp_loc
+dp_locs = interpolated locations after bipolar re-referencing 
+“###_language_noun_seg.mat”
+voice = vector with audio-defined speech onset offset (1 = speech 0 = rest, -1 = rejected data)
+stim = timing of images/cues across experiment
+srate = sampling rate of gTec amplifier
+Verb
+“###_dp_stuff_language_verb.mat”
+dp_data (samples x number of channels) = These are the bipolar re-referenced data.
+dp_lbls = channel labels corresponding to each dp_loc
+dp_locs = interpolated locations after bipolar re-referencing 
+“###_language_verb_seg.mat”
+voice = vector with audio-defined speech onset offset (1 = speech 0 = rest, -1 = rejected data)
+stim = timing of images/cues across experiment
+srate = sampling rate of gTec amplifier
+
+Output variables for sensorimotor and speech tasks:
+
+psds = struct, containing power spectra (raw, mean, normalized, and sequence of trials)
+rvals = struct, containing 
+	•  r^2 values for each bipolar channel pair for rest vs movement 
+	•  movement types compared to one another for high frequency bands and associated pvalues 
+      •  movement types compared to one another for low frequency bands and associated pvalues
+
+Each subject will contain some or all of the following stim files:
+“###_stim_mot_hand_elecs.mat”
+elecs = n x 2 cell array containing all stimulation channel pairs, column 1 is channel name, column 2 is the amplitude at which a sensorimotor response occurred in the hand/arm region (amplitude = 0 represents no response) 
+
+“###_stim_mot_foot_elecs.mat”
+elecs = n x 2 cell array containing all stimulation channel pairs, column 1 is channel name, column 2 is the amplitude at which a sensorimotor response occurred in the foot/thigh/lower leg region (amplitude = 0 represents no response) 
+
+“###_stim_mot_tongue_elecs.mat”
+elecs = n x 2 cell array containing all stimulation channel pairs, column 1 is channel name, column 2 is the amplitude at which a sensorimotor response occurred in the face/mouth/tongue region (amplitude = 0 represents no response) 
+
+“###_stim_mot_lang_elecs.mat”
+elecs = n x 2 cell array containing all stimulation channel pairs, column 1 is channel name, column 2 is the amplitude at which a speech response occurred (amplitude = 0 represents no response) 
+
+
+In order to reproduce the analyses from the manuscript, set the directory to “Mapping_toolbox”. Open the file “SEEG_1DBCI_master_mag_submission.m”, enter the three-letter patient code in the first cell [e.g. “pt = ‘ROR’] and run each section. Each step of analysis is shown clearly in the functions called from this file. All figures generated can be used to re-create all figures within the paper with the exception of schematic figures S1, S2, S3, and the pre-processing steps (top 2 rows) of S7. I have annotated the code in a manner that clearly explains its purpose. All figures, if not obvious based on the figure, are clearly labeled. 
+
+Please note that I use a “code-section” approach to programming (each section headed by “%%”), and it is intended that you evaluate each section (control-enter or command-enter) in sequence to understand each step.
+
+
+Best Wishes,
+Michael Jensen, Kai Miller
+Mayo Clinic, 2024
+jensen.michael1@mayo.edu, miller.kai@mayo.edu
